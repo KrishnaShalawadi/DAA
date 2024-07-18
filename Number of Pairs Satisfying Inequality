@@ -1,0 +1,28 @@
+from sortedcontainers import SortedList
+
+class Solution:
+    def numberOfPairs_v1(self, nums1: List[int], nums2: List[int], diff: int) -> int:
+        """
+        binary search
+        """
+        delta = [a - b for a, b in zip(nums1, nums2)]
+        aux = []
+        res = 0
+        for y in delta:
+            cnt = bisect.bisect_right(aux, y + diff)
+            res += cnt
+            bisect.insort(aux, y)
+        return res
+    
+    def numberOfPairs(self, nums1: List[int], nums2: List[int], diff: int) -> int:
+        """
+        SortedList
+        """
+        delta = [a - b for a, b in zip(nums1, nums2)]
+        aux = SortedList()
+        res = 0
+        for y in delta:
+            cnt = aux.bisect_right(y)
+            res += cnt
+            aux.add(y - diff)
+        return res
